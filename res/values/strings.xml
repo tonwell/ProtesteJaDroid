@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">ProtesteJa</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title">Proteste Já!</string>
+    <string name="btn_postar">Postar</string>
+    <string name="btn_ver">Ver protestos</string>
+    <string name="btn_atualizar">Atualizar</string>
+    <string name="btn_enviar">Enviar protesto</string>
+    <string name="title_activity_show_posts">ShowPostsActivity</string>
+    <string name="title_activity_send_post">SendPostActivity</string>
+    <string name="lbl_nome">Seu nome:</string>
+    <string name="lbl_protesto">Proteste aqui:</string>
+
+</resources>
