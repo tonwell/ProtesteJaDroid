@@ -4,7 +4,6 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -30,16 +29,20 @@ public class HTTPUtils {
 
 	public static String postar(String endereco, Map<String, String> dados) {
 		try {
-			URL url = new URL(endereco);
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			conn.setRequestMethod("POST");
-			conn.setRequestProperty("Content-Type", "application/json");
-			conn.setDoInput(true);
-			OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
 			JSONObject jsdata = new JSONObject();
 			for(Map.Entry<String, String> entry : dados.entrySet()){
 				jsdata.put(entry.getKey(), entry.getValue());
 			}
+			URL url = new URL(endereco);
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("POST");
+			conn.setRequestProperty("Charset", "utf-8");
+			conn.setRequestProperty("Content-Type", "application/json;charset=utf-8");
+			conn.setRequestProperty("Connection", "Keep-Alive");
+			conn.setConnectTimeout(5000);
+			conn.setDoOutput(true);
+			conn.setDoInput(true);
+			OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
 			wr.write(jsdata.toString());
 			wr.flush();
 			wr.close();
@@ -50,7 +53,7 @@ public class HTTPUtils {
 			in.close();
 			return content;
 		} catch (Exception e) {
-			throw new RuntimeException();
+			return null;
 		}
 	}
 }

@@ -69,9 +69,8 @@ public class SendPostActivity extends Activity {
 
 		@Override
 		protected String doInBackground(Void... params) {
-			String s = HTTPUtils.postar(
-					"https://droid-list.herokuapp.com/pessoas", entrada);
-			return s;
+			return HTTPUtils.postar("https://droid-list.herokuapp.com/pessoas",
+					entrada);
 		}
 	}
 

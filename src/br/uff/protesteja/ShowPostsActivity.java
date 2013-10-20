@@ -5,13 +5,13 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 import br.uff.utils.HTTPUtils;
 
 public class ShowPostsActivity extends Activity {
@@ -39,6 +39,12 @@ public class ShowPostsActivity extends Activity {
 		new Postar().execute();
 	}
 	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		new Postar().execute();
+	}
+	
 	private class Postar extends AsyncTask<Void, Void, String[]> {
 		ProgressDialog dialog;
 		@Override
@@ -50,19 +56,21 @@ public class ShowPostsActivity extends Activity {
 		@Override
 		protected void onPostExecute(String[] result) {
 
-
+			if(result != null){
 			ArrayAdapter<String> adapter = new ArrayAdapter<String>(
 					getBaseContext(), android.R.layout.simple_list_item_1,
 					result);
 			lstProtestos.setAdapter(adapter);
+			} else 
+				Toast.makeText(getApplicationContext(), "Erro na conexão", Toast.LENGTH_LONG).show();
+			
 			dialog.dismiss();
 		}
 
 		@Override
 		protected String[] doInBackground(Void... params) {
 			try {
-				String urlD = "https://droid-list.herokuapp.com/pessoas.json";
-				String url = Uri.parse(urlD).toString();
+				String url = "https://droid-list.herokuapp.com/pessoas.json";
 				String conteudo = HTTPUtils.acessar(url);
 				JSONArray resultados = new JSONArray(conteudo);
 
@@ -76,7 +84,7 @@ public class ShowPostsActivity extends Activity {
 				}
 				return pessoas;
 			} catch (Exception e) {
-				throw new RuntimeException();
+				return null;
 			}
 		}
 		

@@ -2,12 +2,29 @@ package br.uff.protesteja;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
+	    ConnectivityManager connMgr = (ConnectivityManager) 
+	            getSystemService(Context.CONNECTIVITY_SERVICE);
+	        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+	        if (networkInfo == null || !networkInfo.isConnected()) {
+	        	Toast.makeText(getApplicationContext(), "Seu aparelho não está on the line!", Toast.LENGTH_LONG).show();
+	        	finish();
+	        }
+		
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
