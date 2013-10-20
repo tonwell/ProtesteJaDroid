@@ -24,7 +24,7 @@ public class ShowPostsActivity extends Activity {
 		setContentView(R.layout.activity_show_posts);
 
 		lstProtestos = (ListView) findViewById(R.id.lst_protestos);
-		new Postar().execute();
+		new Getar().execute();
 
 	}
 
@@ -36,16 +36,16 @@ public class ShowPostsActivity extends Activity {
 	}
 	
 	public void atualizar(View v){
-		new Postar().execute();
+		new Getar().execute();
 	}
 	
 	@Override
 	protected void onResume() {
 		super.onResume();
-		new Postar().execute();
+		new Getar().execute();
 	}
 	
-	private class Postar extends AsyncTask<Void, Void, String[]> {
+	private class Getar extends AsyncTask<Void, Void, String[]> {
 		ProgressDialog dialog;
 		@Override
 		protected void onPreExecute() {
