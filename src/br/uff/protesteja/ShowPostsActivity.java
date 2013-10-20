@@ -34,37 +34,42 @@ public class ShowPostsActivity extends Activity {
 		getMenuInflater().inflate(R.menu.show_posts, menu);
 		return true;
 	}
-	
-	public void atualizar(View v){
+
+	public void atualizar(View v) {
 		new Getar().execute();
 	}
-	
+
 	@Override
 	protected void onResume() {
 		super.onResume();
 		new Getar().execute();
 	}
-	
+
 	private class Getar extends AsyncTask<Void, Void, String[]> {
 		ProgressDialog dialog;
+
 		@Override
 		protected void onPreExecute() {
 			dialog = new ProgressDialog(ShowPostsActivity.this);
 			dialog.show();
 		}
-		
+
 		@Override
 		protected void onPostExecute(String[] result) {
-
-			if(result != null){
-			ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-					getBaseContext(), android.R.layout.simple_list_item_1,
-					result);
-			lstProtestos.setAdapter(adapter);
-			} else 
-				Toast.makeText(getApplicationContext(), "Erro na conexão", Toast.LENGTH_LONG).show();
-			
 			dialog.dismiss();
+
+			if (result != null) {
+				ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+						getBaseContext(), android.R.layout.simple_list_item_1,
+						result);
+				lstProtestos.setAdapter(adapter);
+				if (adapter.isEmpty())
+					Toast.makeText(getApplicationContext(), "Lista vazia",
+							Toast.LENGTH_LONG).show();
+			} else
+				Toast.makeText(getApplicationContext(), "Erro na conexão",
+						Toast.LENGTH_LONG).show();
+
 		}
 
 		@Override
@@ -87,7 +92,7 @@ public class ShowPostsActivity extends Activity {
 				return null;
 			}
 		}
-		
+
 	}
 
 }
