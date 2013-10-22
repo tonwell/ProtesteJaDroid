@@ -79,15 +79,15 @@ public class ShowPostsActivity extends Activity {
 				String conteudo = HTTPUtils.acessar(url);
 				JSONArray resultados = new JSONArray(conteudo);
 
-				String[] pessoas = new String[resultados.length()];
+				String[] protestos = new String[resultados.length()];
 
 				for (int i = 0; i < resultados.length(); i++) {
-					JSONObject pessoa = resultados.getJSONObject(i);
-					String nome = pessoa.getString("nome");
-					String tel = pessoa.getString("tel");
-					pessoas[i] = nome + " - " + tel;
+					JSONObject protesto = resultados.getJSONObject(i);
+					String pessoa = protesto.getString("pessoa");
+					String descricao = protesto.getString("descricao");
+					protestos[i] = pessoa + " - " + descricao;
 				}
-				return pessoas;
+				return protestos;
 			} catch (Exception e) {
 				return null;
 			}
