@@ -38,8 +38,13 @@ public class SendPostActivity extends Activity {
 					Toast.LENGTH_LONG).show();
 		} else {
 			entrada = new HashMap<String, String>();
+<<<<<<< HEAD
 			entrada.put("pessoa", edtNome.getText().toString());
 			entrada.put("descricao", edtProtesto.getText().toString());
+=======
+			entrada.put("nome", edtNome.getText().toString());
+			entrada.put("tel", edtProtesto.getText().toString());
+>>>>>>> 7ab72d4c2862a56bcc2e298d4b370f3a19b3bc78
 			new Postar().execute();
 		}
 	}
@@ -69,7 +74,11 @@ public class SendPostActivity extends Activity {
 
 		@Override
 		protected String doInBackground(Void... params) {
+<<<<<<< HEAD
 			return HTTPUtils.postar("https://droid-list.herokuapp.com/protestos",
+=======
+			return HTTPUtils.postar("https://droid-list.herokuapp.com/pessoas",
+>>>>>>> 7ab72d4c2862a56bcc2e298d4b370f3a19b3bc78
 					entrada);
 		}
 	}
