@@ -75,11 +75,7 @@ public class ShowPostsActivity extends Activity {
 		@Override
 		protected String[] doInBackground(Void... params) {
 			try {
-<<<<<<< HEAD
 				String url = "https://droid-list.herokuapp.com/protestos.json";
-=======
-				String url = "https://droid-list.herokuapp.com/pessoas.json";
->>>>>>> 7ab72d4c2862a56bcc2e298d4b370f3a19b3bc78
 				String conteudo = HTTPUtils.acessar(url);
 				JSONArray resultados = new JSONArray(conteudo);
 
