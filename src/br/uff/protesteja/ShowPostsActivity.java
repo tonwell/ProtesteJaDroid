@@ -4,12 +4,18 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 import br.uff.utils.HTTPUtils;
@@ -66,6 +72,16 @@ public class ShowPostsActivity extends Activity {
 				if (adapter.isEmpty())
 					Toast.makeText(getApplicationContext(), "Lista vazia",
 							Toast.LENGTH_LONG).show();
+				else {
+					lstProtestos.setOnItemClickListener(new OnItemClickListener() {
+
+						@Override
+						public void onItemClick(AdapterView<?> arg0, View arg1,
+								int arg2, long arg3) {
+							showMyDialog();							
+						}
+					});
+				}
 			} else
 				Toast.makeText(getApplicationContext(), "Erro na conexão",
 						Toast.LENGTH_LONG).show();
@@ -93,6 +109,43 @@ public class ShowPostsActivity extends Activity {
 			}
 		}
 
+	}
+	
+	protected void showMyDialog(){
+		final Dialog dbox = new Dialog(ShowPostsActivity.this);
+		dbox.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		dbox.setContentView(R.layout.dialog);
+		Button btnUpd = (Button) findViewById(R.id.btn_update);
+		Button btnDel = (Button) findViewById(R.id.btn_delete);
+		Button btnCanc = (Button) findViewById(R.id.btn_cancel);
+		
+		btnUpd.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				dbox.dismiss();
+				//Intent it = new Intent(ShowPostsActivity.this, UpdateActivity.class);
+				//startActivity(it);
+			}
+		});
+		
+		btnDel.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				dbox.dismiss();
+			}
+		});
+		
+		btnCanc.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				dbox.dismiss();
+			}
+		});
+		
+		dbox.show();
 	}
 
 }

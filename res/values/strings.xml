@@ -13,9 +13,10 @@
     <string name="lbl_nome">Seu nome:</string>
     <string name="lbl_protesto">Proteste aqui:</string>
     <string name="title_activity_update_delete">UpdateDeleteActivity</string>
-    <string name="btn_update">Atualizar dados</string>
-    <string name="btn_delete">Deletar</string>
     <string name="title_activity_update">UpdateActivity</string>
     <string name="hello_world">Hello world!</string>
-
+	<string name="btn_update">Atualizar</string>
+	<string name="btn_delete">Deletar</string>
+	<string name="btn_cancel">Cancelar</string>
+	<string name="lbl_dbox">O que você deseja fazer?</string>
 </resources>
