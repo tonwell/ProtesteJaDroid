@@ -1,13 +1,16 @@
 package br.uff.protesteja;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,6 +26,7 @@ import br.uff.utils.HTTPUtils;
 public class ShowPostsActivity extends Activity {
 
 	private ListView lstProtestos;
+	private JSONObject itemSelected;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +55,7 @@ public class ShowPostsActivity extends Activity {
 		new Getar().execute();
 	}
 
-	private class Getar extends AsyncTask<Void, Void, String[]> {
+	private class Getar extends AsyncTask<Void, Void, JSONObject[]> {
 		ProgressDialog dialog;
 
 		@Override
@@ -61,13 +65,24 @@ public class ShowPostsActivity extends Activity {
 		}
 
 		@Override
-		protected void onPostExecute(String[] result) {
+		protected void onPostExecute(JSONObject[] result) {
 			dialog.dismiss();
-
-			if (result != null) {
+			String[] protestos = new String[result.length];
+			final JSONObject[] items = result;
+			for(int i=0;i<result.length;i++){
+				JSONObject protesto = result[i];
+				try{
+				String pessoa = protesto.getString("pessoa");
+				String descricao = protesto.getString("descricao");
+				protestos[i] = pessoa + " - " + descricao;
+				}catch(JSONException e){
+					protestos = null;
+				}
+			}
+			if (protestos != null) {
 				ArrayAdapter<String> adapter = new ArrayAdapter<String>(
 						getBaseContext(), android.R.layout.simple_list_item_1,
-						result);
+						protestos);
 				lstProtestos.setAdapter(adapter);
 				if (adapter.isEmpty())
 					Toast.makeText(getApplicationContext(), "Lista vazia",
@@ -78,7 +93,8 @@ public class ShowPostsActivity extends Activity {
 						@Override
 						public void onItemClick(AdapterView<?> arg0, View arg1,
 								int arg2, long arg3) {
-							showMyDialog();							
+							itemSelected = items[arg2];
+							showMyDialog();					
 						}
 					});
 				}
@@ -89,19 +105,16 @@ public class ShowPostsActivity extends Activity {
 		}
 
 		@Override
-		protected String[] doInBackground(Void... params) {
+		protected JSONObject[] doInBackground(Void... params) {
 			try {
 				String url = "https://droid-list.herokuapp.com/protestos.json";
 				String conteudo = HTTPUtils.acessar(url);
 				JSONArray resultados = new JSONArray(conteudo);
 
-				String[] protestos = new String[resultados.length()];
+				JSONObject[] protestos = new JSONObject[resultados.length()];
 
 				for (int i = 0; i < resultados.length(); i++) {
-					JSONObject protesto = resultados.getJSONObject(i);
-					String pessoa = protesto.getString("pessoa");
-					String descricao = protesto.getString("descricao");
-					protestos[i] = pessoa + " - " + descricao;
+					protestos[i] = resultados.getJSONObject(i);
 				}
 				return protestos;
 			} catch (Exception e) {
@@ -115,17 +128,18 @@ public class ShowPostsActivity extends Activity {
 		final Dialog dbox = new Dialog(ShowPostsActivity.this);
 		dbox.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		dbox.setContentView(R.layout.dialog);
-		Button btnUpd = (Button) findViewById(R.id.btn_update);
-		Button btnDel = (Button) findViewById(R.id.btn_delete);
-		Button btnCanc = (Button) findViewById(R.id.btn_cancel);
+		Button btnUpd = (Button) dbox.findViewById(R.id.btn_update);
+		Button btnDel = (Button) dbox.findViewById(R.id.btn_delete);
+		Button btnCanc = (Button) dbox.findViewById(R.id.btn_cancel);
 		
 		btnUpd.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View arg0) {
 				dbox.dismiss();
-				//Intent it = new Intent(ShowPostsActivity.this, UpdateActivity.class);
-				//startActivity(it);
+				Intent it = new Intent(ShowPostsActivity.this, UpdateActivity.class);
+				it.putExtra("itemId", itemSelected.toString());
+				startActivity(it);
 			}
 		});
 		
@@ -134,6 +148,11 @@ public class ShowPostsActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				dbox.dismiss();
+				try {
+					HTTPUtils.deletar(itemSelected.getString("url"));
+				} catch (JSONException e) {
+					Log.e("Erro","Json");
+				}
 			}
 		});
 		
