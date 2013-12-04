@@ -67,7 +67,7 @@ public class HTTPUtils {
 			}
 			URL url = new URL(endereco);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			conn.setRequestMethod("PATCH");
+			conn.setRequestMethod("PUT");
 			conn.setDoOutput(true);
 			conn.setDoInput(true);
 			conn.setRequestProperty("Charset", "utf-8");
@@ -80,7 +80,7 @@ public class HTTPUtils {
 			wr.write(jsdata.toString());
 			wr.flush();
 			wr.close();
-			return conn.getResponseCode() == 200 ? true : false;
+			return (conn.getResponseCode() >= 200 && conn.getResponseCode() < 300) ? true : false;
 		} catch (Exception e) {
 			return false;
 		}
@@ -92,7 +92,7 @@ public class HTTPUtils {
 			URL url = new URL(endereco);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("DELETE");
-			return conn.getResponseCode() == 200 ? true : false;
+			return (conn.getResponseCode() >= 200 && conn.getResponseCode() < 300) ? true : false;
 		} catch (Exception e) {
 			return false;
 		}
