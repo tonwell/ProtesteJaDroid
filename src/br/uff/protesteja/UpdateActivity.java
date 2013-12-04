@@ -31,11 +31,11 @@ public class UpdateActivity extends Activity {
 		setContentView(R.layout.activity_update);
 		updNome = (EditText) findViewById(R.id.edt_nome_update);
 		updProtesto = (EditText) findViewById(R.id.edt_protesto_update);
-		btnUpdate = (Button) findViewById(R.id.btn_atualizar);
+		btnUpdate = (Button) findViewById(R.id.btn_atualizar_update);
 		try {
 			obj = new JSONObject(getIntent().getStringExtra("itemId"));
 			updNome.setText(obj.getString("pessoa"));
-			updProtesto.setText(obj.getString("protesto"));
+			updProtesto.setText(obj.getString("descricao"));
 		} catch (Exception e) {
 			Log.e("Erro", "Json");
 		}

@@ -25,4 +25,9 @@
         android:layout_height="wrap_content"
         android:inputType="text" />
 
+    <Button
+        android:id="@+id/btn_atualizar_update"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_atualizar" />
 </LinearLayout>

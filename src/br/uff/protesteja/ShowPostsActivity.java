@@ -143,6 +143,8 @@ public class ShowPostsActivity extends Activity {
 				Intent it = new Intent(ShowPostsActivity.this,
 						UpdateActivity.class);
 				it.putExtra("itemId", itemSelected.toString());
+				Log.e("INFO", (it == null) ? "intent null"
+						: "intent OK!");
 				startActivity(it);
 			}
 		});
@@ -180,6 +182,7 @@ public class ShowPostsActivity extends Activity {
 		protected void onPostExecute(Boolean result) {
 			dialog.dismiss();
 			Toast.makeText(ShowPostsActivity.this, (result)?"Sucesso!":"Erro!", Toast.LENGTH_SHORT).show();
+			new Getar().execute();
 		}
 
 		@Override
